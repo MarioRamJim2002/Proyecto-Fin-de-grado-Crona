@@ -9,13 +9,12 @@ using Random = UnityEngine.Random;
 public enum CombatStatus{
         CHECK_FOR_VICTORY,
         NEXT_TURN
-        
     }
 
 public class LogicaPelea : MonoBehaviour
 {
 
-    
+    /*
     public ControladorDatos controladorDatos;
 
     public FantasmaPelea enemigo;
@@ -214,5 +213,5 @@ public class LogicaPelea : MonoBehaviour
                         controladorDatos.persExpMaxima = (int)(Mathf.Round((float)controladorDatos.persExpMaxima));
 
                     }
-                }
+                */
 }

@@ -6,23 +6,36 @@ using UnityEngine.SceneManagement;
 
 public class MainCharacter : MonoBehaviour{
 
+    public bool isShowingDialogo = false; 
+
+    public float velocidadTexto = 0.075f;
+    public GameObject cuadroDialogo;
+    public Text textoConversacion;
+    public Image imagenPersonaje;
+    public Sprite imagenDialogo;
+    public bool skip = false;
+
     public Animator animator;
+
+    public Text textoMision;
 
     public Text textoVida;
     public Text textoExperiencia;
     public Text textoNivel;
 
+    public Text statsNivel;
     public Text statsVida;
     public Text statsExp;
     public Text statsAtaque;
     public Text statsDefensa;
     public Text statsVelocidad;
 
+
     public MenusManager menusManager;
     public ControladorDatos controladorDatos;
 
     public int vidaTotal = 21;
-    public int vidaActual = 21; 
+    public int vidaActual = 1; 
 
     public double expSiguienteNivel = 100; 
     public double expActual = 0;
@@ -32,11 +45,14 @@ public class MainCharacter : MonoBehaviour{
     public int defensa = 4;
     public int velocidad = 9;
 
-    private int objetoSeleccionado = -1;
     private float velocidadMovimiento = 4f;
 
+    public GameObject[] arbustos;
+    public Sprite arbustoRecogido;
     void Start(){
         
+        cuadroDialogo.SetActive(false);
+
         statsAtaque.text = "Ataque: "+ataque;
         statsDefensa.text = "Defensa: "+defensa;
         statsVelocidad.text = "Velocidad: "+velocidad;
@@ -45,9 +61,9 @@ public class MainCharacter : MonoBehaviour{
 
         controladorDatos = ControladorDatos.Instance;
         menusManager = GetComponent<MenusManager>(); 
-        
-        if(controladorDatos.tieneInfo){
 
+        if(controladorDatos.tieneInfo){
+            
             ataque = controladorDatos.persAtaque;
             defensa = controladorDatos.persDefensa;
             velocidad = controladorDatos.persVelocidad;
@@ -60,17 +76,70 @@ public class MainCharacter : MonoBehaviour{
             textoExperiencia.text = expActual+"/"+expSiguienteNivel;
             textoNivel.text = "Nivel " + nivel;
             transform.position = new Vector3(controladorDatos.x, controladorDatos.y, 0);
-        }
-        
 
+            for(int i=0;i<arbustos.Length;i++){
+                if(controladorDatos.arbustos[i] == false){
+                    arbustos[i].GetComponent<SpriteRenderer>().sprite = arbustoRecogido;
+                }
+            }
+
+            menusManager.mision = controladorDatos.mision;
+
+            if(menusManager.mision == 0){
+                textoMision.text = "Mision principal: \n Comete un bol de bayas para saciarte";
+            }
+            if(menusManager.mision == 1){
+                textoMision.text = "Mision principal \n Encuentra un lugar en el que poder pasar la noche calidamente";
+            }
+
+        }else{
+            StartCoroutine(MostrarDialogo("(No se donde estoy ahora mismo, pero debería buscar algo de comer, estoy hambriento)",imagenDialogo,"Mision principal: \n Comete un bol de bayas para saciarte"));
+        }
     }
 
-   private void OnCollisionEnter2D(Collision2D collision){
+    public IEnumerator MostrarDialogo(string textoDialogo, Sprite imagenDialogo, string misionActual){
 
-    recibirDaño(1);
+        menusManager.menu.SetActive(false);
+        menusManager.inventario.SetActive(false);
+        menusManager.stats.SetActive(false);
+        menusManager.cocina.SetActive(false);
 
-    }  
+        isShowingDialogo = true;
+        menusManager.isShowingAlgo = true;
 
+        cuadroDialogo.SetActive(true);
+
+        imagenPersonaje.sprite = imagenDialogo;
+
+        foreach(char caracter in textoDialogo){
+            if(skip == true){
+                if(misionActual != "NC"){
+                    textoMision.text = misionActual;
+                }
+                cuadroDialogo.SetActive(false);       
+                menusManager.isShowingAlgo = false; 
+                isShowingDialogo = false;
+                skip = false;
+                textoConversacion.text = "";
+                yield break;
+            }
+            textoConversacion.text = textoConversacion.text + caracter;
+            yield return new WaitForSeconds(velocidadTexto);
+
+        }
+                
+        yield return new WaitForSeconds(2f);
+
+        cuadroDialogo.SetActive(false);       
+
+        menusManager.isShowingAlgo = false; 
+        isShowingDialogo = false;
+
+        if(misionActual != "NC"){
+            textoMision.text = misionActual;
+        }
+        textoConversacion.text = "";
+    } 
 
     public void curarVida(int cantidad){
 
@@ -83,7 +152,6 @@ public class MainCharacter : MonoBehaviour{
                 vidaActual = vidaTotal;
 
             }
-
         }
     }
 
@@ -128,11 +196,21 @@ public class MainCharacter : MonoBehaviour{
 
 
     void Update(){  
-        
+
+        statsNivel.text = "Lv "+ nivel;
+        statsAtaque.text = "Ataque: "+ataque;
+        statsDefensa.text = "Defensa: "+defensa;
+        statsVelocidad.text = "Velocidad: "+velocidad;
+        statsExp.text = "Exp: "+expActual+"/"+expSiguienteNivel;
+        statsVida.text = "Vida: "+vidaActual+"/"+vidaTotal;
 
         textoVida.text = vidaActual+"/"+vidaTotal; 
         textoExperiencia.text = expActual+"/"+expSiguienteNivel;
 
+        controladorDatos.cantidadSeta = menusManager.cantidadObjetos[0];
+        controladorDatos.cantidadExpPeque = menusManager.cantidadObjetos[1];
+        controladorDatos.cantidadBayasRojas = menusManager.cantidadObjetos[2];
+        controladorDatos.cantidadBolBayas = menusManager.cantidadObjetos[3];
         controladorDatos.persVidaMaxima = vidaTotal;
         controladorDatos.persVidaActual = vidaActual;
         controladorDatos.persExpMaxima = (int)expSiguienteNivel;
@@ -143,11 +221,18 @@ public class MainCharacter : MonoBehaviour{
         controladorDatos.persNivel = nivel;
         controladorDatos.x = (int)transform.position.x;
         controladorDatos.y = (int)transform.position.y; 
+        controladorDatos.mision = menusManager.mision;
+        
+        for(int i = 0; i<arbustos.Length;i++){
+            if(arbustos[i].GetComponent<SpriteRenderer>().sprite == arbustoRecogido){
+                controladorDatos.arbustos[i] = false;
+            }else{
+                controladorDatos.arbustos[i] = true;
+            }
+        }
 
-        if(menusManager.isShowingAlgo){
-            
-        }else{
-
+        if(menusManager.isShowingAlgo == false){
+        
         gameObject.transform.Translate(new Vector3(Input.GetAxis("Horizontal")*velocidadMovimiento*Time.deltaTime,Input.GetAxis("Vertical")*velocidadMovimiento*Time.deltaTime,0));
 
         if(Input.GetAxis("Vertical")>0){
@@ -169,6 +254,12 @@ public class MainCharacter : MonoBehaviour{
                         animator.Play("Idle");
                     }
             
+        }else{
+            if(isShowingDialogo == true){
+                if(Input.GetKeyDown(KeyCode.Space)){
+                    skip = true;
+                }    
+            }
         }
     }
 }

@@ -9,6 +9,9 @@ public class DatosJuego{
 
     public int cantidadSetaD;
     public int cantidadExpPequeD;
+    public int cantidadBayasRojasD;
+    public int cantidadBolBayasD;
+
     public int xD;
     public int yD;
 
@@ -20,8 +23,9 @@ public class DatosJuego{
     public int persAtaqueD;
     public int persDefensaD;
     public int persVelocidadD;
+    public int misionD;
 
-    public bool isDestroyedD;
+    public bool[] arbustosD;
 
 }
 
@@ -36,6 +40,8 @@ public class ControladorDatos : MonoBehaviour
 
     public int cantidadSeta;
     public int cantidadExpPeque;
+    public int cantidadBayasRojas;
+    public int cantidadBolBayas;
     public int x;
     public int y;
 
@@ -47,21 +53,17 @@ public class ControladorDatos : MonoBehaviour
     public int persAtaque;
     public int persDefensa;
     public int persVelocidad;
-
-    public int enemVida;
-    public int enemExp;
-    public int enemAtaque;
-    public int enemDefensa;
-    public int enemVelocidad; 
-    public int enemNivel;
-    public bool isDestroyed;
     
+    public int mision;
+
+    public bool[] arbustos;
+
     public bool tieneInfo = false; 
     
     private void Awake(){
 
         archivoDeGuardado = Application.dataPath+"/datosJuego.json";
-
+                
         if(ControladorDatos.Instance == null){
 
             ControladorDatos.Instance = this;
@@ -78,13 +80,15 @@ public class ControladorDatos : MonoBehaviour
 
     public void cargarDatos(){
 
-                if(File.Exists(archivoDeGuardado)){
+        if(File.Exists(archivoDeGuardado)){
 
             string contenido = File.ReadAllText(archivoDeGuardado);
             datosJuego =  JsonUtility.FromJson<DatosJuego>(contenido);
             
             cantidadSeta = datosJuego.cantidadSetaD;
             cantidadExpPeque = datosJuego.cantidadExpPequeD;
+            cantidadBayasRojas = datosJuego.cantidadBayasRojasD;
+            cantidadBolBayas = datosJuego.cantidadBolBayasD;
             x = datosJuego.xD;
             y = datosJuego.yD;
             persVidaMaxima = datosJuego.persVidaMaximaD;
@@ -95,19 +99,22 @@ public class ControladorDatos : MonoBehaviour
             persAtaque = datosJuego.persAtaqueD;
             persDefensa = datosJuego.persDefensaD; 
             persVelocidad = datosJuego.persVelocidadD;
-            isDestroyed = datosJuego.isDestroyedD;
+            mision = datosJuego.misionD;
+            arbustos = datosJuego.arbustosD;
             tieneInfo = true;
-
         }
-
     }
 
     public void guardarDatos(){
 
         DatosJuego nuevosDatos = new DatosJuego(){
 
-            xD = Instance.x, 
+            xD = Instance.x,
             yD = Instance.y,
+            cantidadSetaD = Instance.cantidadSeta,
+            cantidadExpPequeD = Instance.cantidadExpPeque,
+            cantidadBayasRojasD = Instance.cantidadBayasRojas,
+            cantidadBolBayasD = Instance.cantidadBolBayas,
             persNivelD = Instance.persNivel,
             persVidaMaximaD = Instance.persVidaMaxima,
             persVidaActualD = Instance.persVidaActual,
@@ -116,7 +123,8 @@ public class ControladorDatos : MonoBehaviour
             persAtaqueD = Instance.persAtaque,
             persDefensaD = Instance.persDefensa,
             persVelocidadD = Instance.persVelocidad,
-            isDestroyedD = Instance.isDestroyed
+            misionD = Instance.mision,
+            arbustosD = Instance.arbustos
 
         };
 

@@ -1014,7 +1014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1302,6 +1302,8 @@ MonoBehaviour:
   datosJuego:
     cantidadSetaD: 0
     cantidadExpPequeD: 0
+    cantidadBayasRojasD: 0
+    cantidadBolBayasD: 0
     xD: 0
     yD: 0
     persVidaMaximaD: 0
@@ -1312,10 +1314,13 @@ MonoBehaviour:
     persAtaqueD: 0
     persDefensaD: 0
     persVelocidadD: 0
-    isDestroyedD: 0
+    misionD: 0
+    arbustosD: 
   archivoDeGuardado: 
   cantidadSeta: 0
   cantidadExpPeque: 0
+  cantidadBayasRojas: 0
+  cantidadBolBayas: 0
   x: 0
   y: 0
   persVidaMaxima: 0
@@ -1326,13 +1331,8 @@ MonoBehaviour:
   persAtaque: 0
   persDefensa: 0
   persVelocidad: 0
-  enemVida: 0
-  enemExp: 0
-  enemAtaque: 0
-  enemDefensa: 0
-  enemVelocidad: 0
-  enemNivel: 0
-  isDestroyed: 0
+  mision: 0
+  arbustos: 0000000000000000
   tieneInfo: 0
 --- !u!4 &2060271339
 Transform:

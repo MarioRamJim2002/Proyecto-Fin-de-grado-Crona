@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class FantasmaPelea : MonoBehaviour
-{
+{/*
     public ControladorDatos controladorDatos;
 
     public int vidaMaxima;
@@ -36,5 +36,5 @@ public class FantasmaPelea : MonoBehaviour
     void Update(){
         textoNivel.text = "Nivel " + nivel;
         textoVida.text = vidaActual + "/" + vidaMaxima;   
-    }
+    }*/
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MainCharacterPelea : MonoBehaviour
 {
-
+    /*
     public ControladorDatos controladorDatos;
 
     public int vidaTotal;
@@ -39,5 +39,5 @@ public class MainCharacterPelea : MonoBehaviour
     {
         textoNivel.text = "Nivel " + nivel;
         textoVida.text = vidaActual + "/" + vidaTotal; 
-    }
+    }*/
 }

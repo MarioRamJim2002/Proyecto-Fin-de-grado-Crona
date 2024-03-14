@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Fantasma : MonoBehaviour
 {
-
+/*
     public ControladorDatos controladorDatos;
 
     public int vidaActual = 17;
@@ -53,5 +53,5 @@ public class Fantasma : MonoBehaviour
         }
 
     }
-
+*/
 }

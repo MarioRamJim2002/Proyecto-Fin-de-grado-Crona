@@ -63,7 +63,7 @@ public class IntroducciónManager : MonoBehaviour
 
     private float velocidadTexto = 0.075f; 
 
-    IEnumerator skip(){
+    IEnumerator Skip(){
 
         bool skipped = false; 
 
@@ -246,6 +246,6 @@ public class IntroducciónManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(this.skip());
+        StartCoroutine(this.Skip());
     }
 }

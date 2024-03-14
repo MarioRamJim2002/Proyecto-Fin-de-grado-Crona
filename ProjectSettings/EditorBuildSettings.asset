@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Escena Pelea.unity
     guid: e8fc16794357a8e4f88c175c05c35d53
+  - enabled: 1
+    path: Assets/Scenes/Escena Final.unity
+    guid: 12bd794f80825cd4da238b74feb9507b
   m_configObjects: {}
